@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(255)
+  email     String      @unique @db.VarChar(255)
+  password  String      @db.VarChar(255)
+  jwt_token String?     @db.VarChar(255)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deletedAt DateTime?
+  UserSkill UserSkill[]
+}
+
+model DomainMaster {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(255)
+  skills    Skills[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deletedAt DateTime?
+  UserSkill UserSkill[]
+}
+
+model Skills {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  DomainMaster   DomainMaster @relation(fields: [domainMasterId], references: [id])
+  domainMasterId Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  UserSkill      UserSkill[]
+}
+
+model UserSkill {
+  id Int @id @default(autoincrement())
+
+  skillLevel String @db.VarChar(255)
+  YOE        Int
+
+  User   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  DomainMaster   DomainMaster @relation(fields: [domainMasterId], references: [id])
+  domainMasterId Int
+
+  Skill   Skills @relation(fields: [skillId], references: [id])
+  skillId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
