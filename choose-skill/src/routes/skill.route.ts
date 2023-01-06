@@ -15,11 +15,7 @@ class SkillRoute implements Routes {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}`, authMiddleware, this.skillsController.getSkills);
-        this.router.post(`${this.path}`, authMiddleware, validationMiddleware(BulkCreateSkillDto, 'body'), this.skillsController.createSkill);
-        this.router.get(`${this.path}/search/:id(\\d+)`, authMiddleware, this.skillsController.getSkillsByDomainID);
-        this.router.put(`${this.path}/:id(\\d+)`, authMiddleware, validationMiddleware(CreateSkillDto, 'body'), this.skillsController.updateSkill);
-        this.router.delete(`${this.path}/:id(\\d+)`, authMiddleware, this.skillsController.deleteSkill);
+        this.router.get(`${this.path}/:id(\\d+)`, authMiddleware, this.skillsController.getSkillsByDomainID);
     }
 }
 
