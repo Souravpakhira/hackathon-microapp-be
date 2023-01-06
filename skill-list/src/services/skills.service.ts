@@ -3,6 +3,9 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { CreateSkillDto } from '@/dtos/skill.dts';
 
+// select s.id , s.name from "Skills" s 
+// left join "UserSkill" us on us."skillId" = s.id 
+// where s."domainMasterId" = 1 and us.id is Null
 class SkillService {
   public skill = new PrismaClient().skills;
   public domain = new PrismaClient().domainMaster;
@@ -39,13 +42,14 @@ class SkillService {
       where: {
         AND: {
           domainMasterId: domainId,
-          name: { contains: search }
+          name: search
         }
       }
     })
     if (!findDomain) throw new HttpException(200, "Skills doesn't exist");
 
-    return findDomain;
+    const msg = `${findDomain.name} skill already exist`
+    return msg;
   }
 
   public async createSkill(skillData: Array<CreateSkillDto>): Promise<any> {

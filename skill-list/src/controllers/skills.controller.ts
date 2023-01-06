@@ -22,15 +22,12 @@ class SkillsController {
     try {
       const domainID = Number(req.params.id);
       const { search } = req.query;
-      console.log(search);
-      let findAllSkillsData: any;
+      let findAllSkillsData: any = [];
       if (search) {
         findAllSkillsData = await this.skillService.searchSkill(domainID, String(search));
-      } else {
-        findAllSkillsData = await this.skillService.findSkillByDomainId(domainID);
       }
 
-      res.status(200).json({ data: findAllSkillsData, message: 'findAll' });
+      res.status(200).json({ message: findAllSkillsData });
     } catch (error) {
       next(error);
     }

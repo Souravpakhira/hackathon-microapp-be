@@ -7,6 +7,6 @@ import DomainsRoute from './routes/domain.route';
 import SkillsRoute from '@routes/skill.route';
 import UserSkillRoute from './routes/user-skill.route';
 validateEnv();
-const app = new App([new IndexRoute(), new UsersRoute(), new AuthRoute(), new DomainsRoute(), new SkillsRoute(), new UserSkillRoute()]);
+const app = new App([new IndexRoute(), new UserSkillRoute()]);
 
 app.listen();
