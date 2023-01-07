@@ -27,7 +27,7 @@ class SkillsController {
         findAllSkillsData = await this.skillService.searchSkill(domainID, String(search));
       }
 
-      res.status(200).json({ message: findAllSkillsData });
+      res.status(200).json({ exist: 1, message: findAllSkillsData });
     } catch (error) {
       next(error);
     }
