@@ -21,7 +21,7 @@ class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
-      const { tokenData } = await this.authService.login(userData);
+      const tokenData = await this.authService.login(userData);
 
       // res.setHeader('Set-Cookie', [cookie]);
       res.status(200).json({ data: tokenData, message: 'login' });

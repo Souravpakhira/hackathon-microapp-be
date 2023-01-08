@@ -17,16 +17,18 @@ class AuthService {
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
-    const createUserData = this.users.create({ data: { ...userData, password: hashedPassword },select: {
-      id:true,
-      email: true,
-      name: true,
-    }, });
+    const createUserData = this.users.create({
+      data: { ...userData, password: hashedPassword }, select: {
+        id: true,
+        email: true,
+        name: true,
+      },
+    });
 
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{tokenData: TokenData} > {
+  public async login(userData: CreateUserDto): Promise<any> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
     const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
@@ -43,15 +45,20 @@ class AuthService {
       },
       data: {
         jwt_token: tokenData.token
+      },
+      select: {
+        id: true,
+        jwt_token: true
       }
-    })
-    return { tokenData };
+    });
+
+    return updateUser;
   }
 
   public async logout(userData: DataStoredInToken): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
-    const findUser: User = await this.users.findFirst({ where: { email: userData.email} });
+    const findUser: User = await this.users.findFirst({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     return findUser;
