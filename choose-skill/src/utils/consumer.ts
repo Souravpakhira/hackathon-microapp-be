@@ -2,14 +2,22 @@
 import MessageBroker from '@integrations/rabbitmq.integration';
 import skillService from '@/services/skills.service';
 import DomainService from '@/services/domain.service';
+import UserService from '@/services/users.service';
 
 export const initializeRabbitMq = () => {
     const skillservice = new skillService();
     const Domainservice = new DomainService();
+    const userService = new UserService();
     MessageBroker.getInstance()
         .then(broker => {
             broker.subscribe('test', (msg: { content: { toString: () => any; }; }, ack: () => void) => {
                 console.log('Message:', msg.content.toString())
+                ack()
+            })
+
+            broker.subscribe('create_user', (msg: { content: any }, ack: () => void) => {
+                console.log('Message:', msg.content.toString())
+                userService.createUser(JSON.parse(msg.content));
                 ack()
             })
 
