@@ -14,7 +14,8 @@ class SkillService {
       where: {
         AND: {
           userId: userId,
-          domainMasterId: domainID
+          domainMasterId: domainID,
+          deletedAt: null
         }
       },
       select: {
