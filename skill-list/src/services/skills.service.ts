@@ -14,7 +14,7 @@ class SkillService {
         deletedAt: null
       },
       orderBy: {
-        createdAt: 'desc'
+        updatedAt: 'desc'
       },
       include: {
         DomainMaster: true
